@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-success" role="alert">
+                {% for message in messages %}
+                    {{ message }}
+                    <br/>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <form action="{{ url_for('sites.purge_all_items_in_cache') }}" role="form" method="POST">
+        <div class="form-row">
+            <label for="purgeAllItemsInCache">Clear a staging sites entire cache.</label>
+            <div class="col-auto">
+                <select class="form-control" name="_id" id="purgeAllItemsInCache">
+                    {% for site in sites %}
+                        {% if site.environment == 'staging' %}
+                            <option value="{{ site.id }}">{{ site.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-danger"><i class="fab fa-hotjar"></i> Purge Cache</button>
+            </div>
+        </div>
+    </form>
+
+    <hr/>
+
+    <form action="{{ url_for('sites.purge_all_staging_cache') }}" role="form" method="POST">
+        <div class="form-row">
+            <div class="col-auto">
+                <label for="purgeAllStagingCache"><strong>Clear the cache for all staging sites.</strong></label>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-danger"><i class="fab fa-hotjar"></i> Purge Cache</button>
+            </div>
+        </div>
+    </form>
+
+    <hr/>
+
+    <form action="{{ url_for('sites.purge_single_items_in_cache') }}" role="form" method="POST">
+        <div class="form-group">
+            <label for="purgeSingleItemsInCache">Clear individual files in a selected sites cache.</label>
+            <select class="form-control" name="_id" id="purgeSingleItemsInCache">
+                {% for site in sites %}
+                    <option value="{{ site.id }}">{{ site.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="purgeSingleItemsInCacheTextArea">Enter one URL per line. It needs to match the selected site</label>
+            <textarea name="urls" class="form-control" placeholder="http://site.com/path/to/file.jpeg"
+                      id="purgeSingleItemsInCacheTextArea" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-danger"><i class="fab fa-hotjar"></i> Purge Cache</button>
+    </form>
+{% endblock %}
