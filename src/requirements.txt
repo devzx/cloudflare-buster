@@ -13,7 +13,7 @@ jsonlines==1.2.0
 MarkupSafe==1.1.0
 marshmallow==2.16.3
 pytz==2018.7
-PyYAML==3.13
+PyYAML==5.4
 requests==2.21.0
 six==1.12.0
 urllib3==1.24.1
